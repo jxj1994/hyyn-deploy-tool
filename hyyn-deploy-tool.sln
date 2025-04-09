@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hyyn-deploy-tool", "hyyn-deploy-tool.csproj", "{915313D7-3754-40DD-BEBC-46EA2C8A6406}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{915313D7-3754-40DD-BEBC-46EA2C8A6406}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{915313D7-3754-40DD-BEBC-46EA2C8A6406}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{915313D7-3754-40DD-BEBC-46EA2C8A6406}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{915313D7-3754-40DD-BEBC-46EA2C8A6406}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {76858D02-8C0F-40F2-A995-228A5585C44A}
+	EndGlobalSection
+EndGlobal
