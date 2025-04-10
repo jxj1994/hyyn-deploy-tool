@@ -90,7 +90,7 @@ namespace hyyn_deploy_tool
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(148, 22);
             this.toolStripMenuItem1.Text = "设置临时目录";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.ToolStripMenuItem1_Click);
             // 
@@ -99,7 +99,7 @@ namespace hyyn_deploy_tool
             this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripComboBox1});
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(148, 22);
             this.toolStripMenuItem2.Text = "加载连接配置";
             // 
             // toolStripComboBox1
@@ -112,7 +112,7 @@ namespace hyyn_deploy_tool
             // 退出ToolStripMenuItem
             // 
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.退出ToolStripMenuItem.Text = "退出";
             this.退出ToolStripMenuItem.Click += new System.EventHandler(this.QuitToolStripMenuItem_Click);
             // 
@@ -255,7 +255,7 @@ namespace hyyn_deploy_tool
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::hyyn_deploy_tool.Properties.Resources.haiyi;
+            this.pictureBox1.Image = global::hyyn_deploy_tool.Properties.Resources.al0lw_80vct;
             this.pictureBox1.InitialImage = null;
             this.pictureBox1.Location = new System.Drawing.Point(425, 28);
             this.pictureBox1.Name = "pictureBox1";
