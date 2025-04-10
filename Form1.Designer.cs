@@ -1,4 +1,6 @@
-﻿namespace hyyn_deploy_tool
+﻿using System;
+
+namespace hyyn_deploy_tool
 {
     partial class MainForm
     {
@@ -29,9 +31,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.有问题自己搞定ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,9 +54,10 @@
             this.sqlTextBox = new System.Windows.Forms.RichTextBox();
             this.expButton = new System.Windows.Forms.Button();
             this.logTextBox = new System.Windows.Forms.RichTextBox();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.label6 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // contextMenuStrip1
@@ -60,23 +67,47 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.BackColor = System.Drawing.SystemColors.MenuBar;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.文件ToolStripMenuItem,
+            this.mainToolStripMenuItem,
             this.帮助ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(568, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(546, 25);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // 文件ToolStripMenuItem
+            // mainToolStripMenuItem
             // 
-            this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mainToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
+            this.toolStripMenuItem2,
             this.退出ToolStripMenuItem});
-            this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
-            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
-            this.文件ToolStripMenuItem.Text = "文件";
+            this.mainToolStripMenuItem.Name = "mainToolStripMenuItem";
+            this.mainToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
+            this.mainToolStripMenuItem.Text = "文件";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem1.Text = "设置临时目录";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.ToolStripMenuItem1_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripComboBox1});
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem2.Text = "加载连接配置";
+            // 
+            // toolStripComboBox1
+            // 
+            this.toolStripComboBox1.Name = "toolStripComboBox1";
+            this.toolStripComboBox1.Size = new System.Drawing.Size(121, 25);
+            this.toolStripComboBox1.SelectedIndexChanged += new System.EventHandler(this.ToolStripComboBox1_SelectedItemChanged);
+            this.toolStripComboBox1.MouseHover += new System.EventHandler(this.ToolStripComboBox1_Click);
             // 
             // 退出ToolStripMenuItem
             // 
@@ -108,88 +139,94 @@
             // 
             // userNameTextBox
             // 
-            this.userNameTextBox.Location = new System.Drawing.Point(111, 28);
+            this.userNameTextBox.Location = new System.Drawing.Point(130, 27);
             this.userNameTextBox.Name = "userNameTextBox";
-            this.userNameTextBox.Size = new System.Drawing.Size(220, 21);
+            this.userNameTextBox.Size = new System.Drawing.Size(226, 21);
             this.userNameTextBox.TabIndex = 2;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 31);
+            this.label1.Font = new System.Drawing.Font("宋体", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.Location = new System.Drawing.Point(72, 33);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 12);
+            this.label1.Size = new System.Drawing.Size(52, 15);
             this.label1.TabIndex = 3;
             this.label1.Text = "用户名";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 64);
+            this.label2.Font = new System.Drawing.Font("宋体", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.Location = new System.Drawing.Point(87, 64);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(29, 12);
+            this.label2.Size = new System.Drawing.Size(37, 15);
             this.label2.TabIndex = 4;
             this.label2.Text = "密码";
             // 
             // passwdTextBox
             // 
-            this.passwdTextBox.Location = new System.Drawing.Point(111, 61);
+            this.passwdTextBox.Location = new System.Drawing.Point(130, 58);
             this.passwdTextBox.Name = "passwdTextBox";
-            this.passwdTextBox.Size = new System.Drawing.Size(220, 21);
+            this.passwdTextBox.PasswordChar = '*';
+            this.passwdTextBox.Size = new System.Drawing.Size(226, 21);
             this.passwdTextBox.TabIndex = 5;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 97);
+            this.label3.Font = new System.Drawing.Font("宋体", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label3.Location = new System.Drawing.Point(9, 100);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(89, 12);
+            this.label3.Size = new System.Drawing.Size(112, 15);
             this.label3.TabIndex = 6;
             this.label3.Text = "数据库连接配置";
             // 
             // dbNameTextBox
             // 
-            this.dbNameTextBox.Location = new System.Drawing.Point(111, 94);
+            this.dbNameTextBox.Location = new System.Drawing.Point(130, 94);
             this.dbNameTextBox.Name = "dbNameTextBox";
-            this.dbNameTextBox.Size = new System.Drawing.Size(220, 21);
+            this.dbNameTextBox.Size = new System.Drawing.Size(226, 21);
             this.dbNameTextBox.TabIndex = 7;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 135);
+            this.label4.Font = new System.Drawing.Font("宋体", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label4.Location = new System.Drawing.Point(60, 132);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(47, 12);
+            this.label4.Size = new System.Drawing.Size(61, 15);
             this.label4.TabIndex = 8;
             this.label4.Text = "导出sql";
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(109, 267);
+            this.progressBar1.Location = new System.Drawing.Point(12, 279);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(447, 23);
+            this.progressBar1.Size = new System.Drawing.Size(517, 23);
             this.progressBar1.TabIndex = 10;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 267);
+            this.label5.Font = new System.Drawing.Font("宋体", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label5.Location = new System.Drawing.Point(12, 261);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(29, 12);
+            this.label5.Size = new System.Drawing.Size(37, 15);
             this.label5.TabIndex = 11;
             this.label5.Text = "进度";
             // 
             // sqlTextBox
             // 
-            this.sqlTextBox.Location = new System.Drawing.Point(111, 132);
+            this.sqlTextBox.Location = new System.Drawing.Point(130, 132);
             this.sqlTextBox.Name = "sqlTextBox";
-            this.sqlTextBox.Size = new System.Drawing.Size(445, 119);
+            this.sqlTextBox.Size = new System.Drawing.Size(399, 119);
             this.sqlTextBox.TabIndex = 12;
             this.sqlTextBox.Text = "";
             // 
             // expButton
             // 
-            this.expButton.Location = new System.Drawing.Point(226, 312);
+            this.expButton.Location = new System.Drawing.Point(223, 321);
             this.expButton.Name = "expButton";
             this.expButton.Size = new System.Drawing.Size(105, 25);
             this.expButton.TabIndex = 13;
@@ -199,25 +236,42 @@
             // 
             // logTextBox
             // 
-            this.logTextBox.Location = new System.Drawing.Point(12, 361);
+            this.logTextBox.Location = new System.Drawing.Point(12, 352);
             this.logTextBox.Name = "logTextBox";
-            this.logTextBox.Size = new System.Drawing.Size(544, 128);
+            this.logTextBox.Size = new System.Drawing.Size(517, 137);
             this.logTextBox.TabIndex = 14;
             this.logTextBox.Text = "";
             // 
-            // toolStripMenuItem1
+            // label6
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItem1.Text = "设置临时目录";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("宋体", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label6.Location = new System.Drawing.Point(128, 118);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(170, 11);
+            this.label6.TabIndex = 15;
+            this.label6.Text = "示例：10.111.62.242:1530:pms";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::hyyn_deploy_tool.Properties.Resources.haiyi;
+            this.pictureBox1.InitialImage = null;
+            this.pictureBox1.Location = new System.Drawing.Point(425, 28);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(104, 91);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 16;
+            this.pictureBox1.TabStop = false;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.ClientSize = new System.Drawing.Size(568, 501);
+            this.ClientSize = new System.Drawing.Size(546, 501);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.logTextBox);
             this.Controls.Add(this.expButton);
             this.Controls.Add(this.sqlTextBox);
@@ -231,12 +285,14 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.userNameTextBox);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "hyyn-deploy-tool";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -246,7 +302,7 @@
 
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem 文件ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mainToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 帮助ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 有问题自己搞定ToolStripMenuItem;
@@ -264,7 +320,10 @@
         private System.Windows.Forms.RichTextBox logTextBox;
         private System.Windows.Forms.ToolStripMenuItem 不要逼逼ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

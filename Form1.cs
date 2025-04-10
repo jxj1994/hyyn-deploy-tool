@@ -6,6 +6,7 @@ using System.Diagnostics;
 using MiniExcelLibs;
 using System.Collections.Generic;
 using System.IO.Compression;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace hyyn_deploy_tool
 {
@@ -44,12 +45,16 @@ namespace hyyn_deploy_tool
                 string dbName = dbNameTextBox.Text;
                 if (dbName == "")
                 {
-                    MessageBox.Show("请输入数据库名！");
+                    MessageBox.Show("请输入数据库连接信息！");
                     progressBar1.Value = 0;
                     expButton.Enabled = true;
                     return;
                 }
-                string sql = sqlTextBox.Text;
+                else
+                {
+                    SaveConnection(dbName);
+                }
+                    string sql = sqlTextBox.Text;
                 if (sql == "")
                 {
                     MessageBox.Show("请输入SQL！");
@@ -92,7 +97,8 @@ namespace hyyn_deploy_tool
             }
         }
 
-        private Boolean CheckSource()
+
+        private bool CheckSource()
         {
             //检查临时目录是否存在
             if (!Directory.Exists(tempDir))
@@ -285,11 +291,15 @@ namespace hyyn_deploy_tool
 
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             //设置临时目录，默认为E:/temp
-            folderBrowserDialog1.ShowDialog();
-            tempDir = folderBrowserDialog1.SelectedPath;
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+            dialog.IsFolderPicker = true;
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                tempDir = dialog.FileName;
+            }
             if (tempDir == "" || tempDir == null)
             {
                 tempDir = "G:\\temp";
@@ -297,5 +307,48 @@ namespace hyyn_deploy_tool
             UpdateMsg("临时目录被设置为：" + tempDir);
             
         }
+
+
+        private void SaveConnection(string dbName)
+        {
+            File.AppendAllLines(Path.Combine(Application.StartupPath, "connections.txt"), new string[] { dbName });
+        }
+
+        /**
+         * 连接历史选择
+         */
+        private void ToolStripComboBox1_Click(object sender, EventArgs e)
+        {
+            //连接历史保存为json文件，加载json文件作为选择项
+            if (File.Exists(Path.Combine(Application.StartupPath,"connections.txt")))
+            {
+                foreach (var item in File.ReadLines(Path.Combine(Application.StartupPath, "connections.txt")))
+                {
+                    if (toolStripComboBox1.Items.Count == 0)
+                    {
+                        toolStripComboBox1.Items.Add(item);
+                    }
+                    else
+                    {
+                        foreach (var item1 in toolStripComboBox1.Items)
+                        {
+                            if (!item1.ToString().Equals(item.ToString()))
+                            {
+                                toolStripComboBox1.Items.Add(item);
+                            }
+                        }
+                    }
+                }
+                
+            }
+        }
+
+        private void ToolStripComboBox1_SelectedItemChanged(object sender, EventArgs e)
+        {
+            dbNameTextBox.Text = toolStripComboBox1.SelectedItem.ToString();
+            mainToolStripMenuItem.HideDropDown();
+        }
+
+
     }
 }
