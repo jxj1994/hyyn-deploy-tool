@@ -294,8 +294,10 @@ namespace hyyn_deploy_tool
         private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             //设置临时目录，默认为E:/temp
-            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-            dialog.IsFolderPicker = true;
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog
+            {
+                IsFolderPicker = true
+            };
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 tempDir = dialog.FileName;
