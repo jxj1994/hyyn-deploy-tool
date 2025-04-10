@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Text;
 using System.Windows.Forms;
-using System.IO.Compression;
 using System.IO;
 using System.Diagnostics;
 using MiniExcelLibs;
-using MiniExcelLibs.Utils;
 using System.Collections.Generic;
+using System.IO.Compression;
 
 namespace hyyn_deploy_tool
 {
@@ -17,12 +16,13 @@ namespace hyyn_deploy_tool
             InitializeComponent();
         }
 
-        private string tempDir = "E:\temp";
+        private string tempDir = "G:\\temp";
 
         private void ExpButton_Click(object sender, EventArgs e)
         {
             if (CheckSource())
             {
+                expButton.Enabled = false;
                 //开始导出数据
                 UpdateMsg("开始导出数据...",10);
                 string username = userNameTextBox.Text;
@@ -30,6 +30,7 @@ namespace hyyn_deploy_tool
                 {
                     MessageBox.Show("请输入用户名！");
                     progressBar1.Value = 0;
+                    expButton.Enabled = true;
                     return;
                 }
                 string password = passwdTextBox.Text;
@@ -37,6 +38,7 @@ namespace hyyn_deploy_tool
                 {
                     MessageBox.Show("请输入密码！");
                     progressBar1.Value = 0;
+                    expButton.Enabled = true;
                     return;
                 }
                 string dbName = dbNameTextBox.Text;
@@ -44,6 +46,7 @@ namespace hyyn_deploy_tool
                 {
                     MessageBox.Show("请输入数据库名！");
                     progressBar1.Value = 0;
+                    expButton.Enabled = true;
                     return;
                 }
                 string sql = sqlTextBox.Text;
@@ -51,10 +54,11 @@ namespace hyyn_deploy_tool
                 {
                     MessageBox.Show("请输入SQL！");
                     progressBar1.Value = 0;
+                    expButton.Enabled = true;
                     return;
                 }
                 //获取当前系统登录用户名用于命名临时文件
-                string csvFileName = Environment.UserName + DateTime.Now.ToString("yyyyMMddHH24mmss") + ".csv";
+                string csvFileName = Environment.UserName + DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv";
                 StringBuilder command = new StringBuilder();
                 command.Append(Path.Combine(tempDir, "sqluldr264.exe"))
                 .Append(" user=")
@@ -70,7 +74,7 @@ namespace hyyn_deploy_tool
                 .Append(" head=yes text=csv");
                 //执行命令行命令导出数据
                 UpdateMsg("开始执行导出命令...\r"+command.ToString(),20);
-                string excelFileName = Environment.UserName + DateTime.Now.ToString("yyyyMMddHH24mmss") + ".xlsx";
+                string excelFileName = Environment.UserName + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xlsx";
                 try
                 {
                     RunCommand(csvFileName, excelFileName,command.ToString());
@@ -91,13 +95,13 @@ namespace hyyn_deploy_tool
         private Boolean CheckSource()
         {
             //检查临时目录是否存在
-            if (!System.IO.Directory.Exists("E:/temp"))
+            if (!Directory.Exists(tempDir))
             {
                 UpdateMsg("临时目录不存在,开始生成。");
                 //创建临时目录
                 try
                 {
-                    System.IO.Directory.CreateDirectory("E:/temp");
+                    Directory.CreateDirectory(tempDir);
                 }
                 catch (Exception ex)
                 {
@@ -107,7 +111,7 @@ namespace hyyn_deploy_tool
                 }
             }
             //检查sqluldr264是否存在
-            if (!System.IO.File.Exists("E:/temp/sqluldr264.exe"))
+            if (!File.Exists(Path.Combine(tempDir,"sqluldr264.exe")))
             {
                 UpdateMsg("sqluldr264.exe不存在，开始生成！");
                 // 解压sqluldr264.zip文件到E:/temp目录下
@@ -115,15 +119,15 @@ namespace hyyn_deploy_tool
                 {
                     //加载source目录下的sqluldr264.zip文件到E:/temp目录下
                     string sourcePath = Path.Combine(Application.StartupPath, "source\\sqluldr264.zip");
-                    if (!System.IO.File.Exists(sourcePath))
+                    if (!File.Exists(sourcePath))
                     {
                         UpdateMsg("sqluldr264.zip资源文件不存在，请检查！");
                         return false;
                     }
-                    System.IO.File.Copy(sourcePath, "E:/temp/sqluldr264.zip");
-                    string zipFilePath = "E:/temp/sqluldr264.zip";
-                    string extractPath = "E:/temp";
-                    ZipFile.ExtractToDirectory(zipFilePath, extractPath);
+                    File.Copy(sourcePath, Path.Combine(tempDir, "sqluldr264.zip"));
+                    string zipFilePath = Path.Combine(tempDir, "sqluldr264.zip");
+                    ZipFile.ExtractToDirectory(zipFilePath, tempDir);
+                    File.Delete(zipFilePath);
                 }
                 catch (Exception ex)
                 {
@@ -166,23 +170,38 @@ namespace hyyn_deploy_tool
                 {
                     StreamWriterFunc = (stream) => new StreamWriter(stream, Encoding.GetEncoding("gb2312"))
                 };
-                FileStream csv = File.Open(Path.Combine(tempDir, csvFileName), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                FileStream xlsx = new FileStream(Path.Combine(tempDir, excelFileName), FileMode.CreateNew);
-                IEnumerable<object> value = csv.Query(useHeaderRow: false, null, ExcelType.CSV, configuration: readConfig);
-                xlsx.SaveAs(value, printHeader: false,configuration:writeConfig);
-                //MiniExcel.ConvertCsvToXlsx(Path.Combine(tempDir, csvFileName), Path.Combine(tempDir, excelFileName));
-                xlsx.Close();
-                csv.Close();
-                UpdateTextBox(logTextBox, "转换CSV数据为Excel文件完成！");
-                finish(logTextBox, progressBar1, "导出Excel数据完成！文件路径：\r"
-                    + Path.Combine(tempDir, excelFileName));
+                if (File.Exists(Path.Combine(tempDir, csvFileName)))
+                {
+                    FileStream csv = File.Open(Path.Combine(tempDir, csvFileName), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    FileStream xlsx = new FileStream(Path.Combine(tempDir, excelFileName), FileMode.CreateNew);
+                    IEnumerable<object> value = csv.Query(useHeaderRow: false, null, ExcelType.CSV, configuration: readConfig);
+                    xlsx.SaveAs(value, printHeader: false, configuration: writeConfig);
+                    xlsx.Close();
+                    csv.Close();
+                    UpdateTextBox(logTextBox, "转换CSV数据为Excel文件完成！");
+                    Finish(logTextBox, progressBar1, "导出Excel数据完成！文件路径：\r"
+                        + Path.Combine(tempDir, excelFileName));
+                }
+                else
+                {
+                    MessageBox.Show("导出Excel失败，临时目录" + tempDir + "中无法找到csv文件");
+                    Finish(logTextBox, progressBar1, "导出Excel失败，临时目录"+tempDir+"中无法找到csv文件");
+                }
+                File.Delete(Path.Combine(tempDir, csvFileName));
+                if (expButton.InvokeRequired) {
+                    expButton.Invoke(new Action(() =>
+                    {
+                        expButton.Enabled = true;
+                    }));
+                }
+                else
+                {
+                    expButton.Enabled = true;
+                }
             };
             process.Start();
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
-            //process.WaitForExit();
-            
-            //process.Dispose();
         }
 
         private void UpdateTextBox(RichTextBox textBox, string data)
@@ -206,7 +225,7 @@ namespace hyyn_deploy_tool
         /**
          * 结束的操作
          */
-        private void finish(RichTextBox textBox,ProgressBar progressBar, string msg)
+        private void Finish(RichTextBox textBox,ProgressBar progressBar, string msg)
         {
             if (string.IsNullOrEmpty(msg)) return;
             if (textBox.InvokeRequired)
@@ -239,7 +258,7 @@ namespace hyyn_deploy_tool
         private void UpdateMsg(string msg)
         {
             //获取当前时间进行日志输出
-            string time = DateTime.Now.ToString("yyyy年MM月dd日ttHH时mm分ss秒");
+            string time = DateTime.Now.ToString("yyyy年MM月dd日HH时mm分ss秒");
             logTextBox.AppendText(time + " ");
             logTextBox.AppendText(msg + "\r");
             logTextBox.ScrollToCaret();
@@ -273,8 +292,9 @@ namespace hyyn_deploy_tool
             tempDir = folderBrowserDialog1.SelectedPath;
             if (tempDir == "" || tempDir == null)
             {
-                tempDir = "E:/temp";
+                tempDir = "G:\\temp";
             }
+            UpdateMsg("临时目录被设置为：" + tempDir);
             
         }
     }
