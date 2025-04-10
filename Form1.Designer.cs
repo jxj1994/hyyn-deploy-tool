@@ -32,9 +32,24 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.有问题自己搞定ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.不要逼逼ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.userNameTextBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.passwdTextBox = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.dbNameTextBox = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.label5 = new System.Windows.Forms.Label();
+            this.sqlTextBox = new System.Windows.Forms.RichTextBox();
+            this.expButton = new System.Windows.Forms.Button();
+            this.logTextBox = new System.Windows.Forms.RichTextBox();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,47 +65,176 @@
             this.帮助ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(568, 25);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // 文件ToolStripMenuItem
             // 
             this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
             this.退出ToolStripMenuItem});
             this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
             this.文件ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
             this.文件ToolStripMenuItem.Text = "文件";
-            // 
-            // 帮助ToolStripMenuItem
-            // 
-            this.帮助ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.有问题自己搞定ToolStripMenuItem});
-            this.帮助ToolStripMenuItem.Name = "帮助ToolStripMenuItem";
-            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
-            this.帮助ToolStripMenuItem.Text = "帮助";
             // 
             // 退出ToolStripMenuItem
             // 
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
             this.退出ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.退出ToolStripMenuItem.Text = "退出";
+            this.退出ToolStripMenuItem.Click += new System.EventHandler(this.QuitToolStripMenuItem_Click);
+            // 
+            // 帮助ToolStripMenuItem
+            // 
+            this.帮助ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.有问题自己搞定ToolStripMenuItem,
+            this.不要逼逼ToolStripMenuItem});
+            this.帮助ToolStripMenuItem.Name = "帮助ToolStripMenuItem";
+            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
+            this.帮助ToolStripMenuItem.Text = "帮助";
             // 
             // 有问题自己搞定ToolStripMenuItem
             // 
             this.有问题自己搞定ToolStripMenuItem.Name = "有问题自己搞定ToolStripMenuItem";
-            this.有问题自己搞定ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.有问题自己搞定ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.有问题自己搞定ToolStripMenuItem.Text = "有问题自己搞定";
+            // 
+            // 不要逼逼ToolStripMenuItem
+            // 
+            this.不要逼逼ToolStripMenuItem.Name = "不要逼逼ToolStripMenuItem";
+            this.不要逼逼ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.不要逼逼ToolStripMenuItem.Text = "不要逼逼";
+            // 
+            // userNameTextBox
+            // 
+            this.userNameTextBox.Location = new System.Drawing.Point(111, 28);
+            this.userNameTextBox.Name = "userNameTextBox";
+            this.userNameTextBox.Size = new System.Drawing.Size(220, 21);
+            this.userNameTextBox.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 31);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(41, 12);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "用户名";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 64);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(29, 12);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "密码";
+            // 
+            // passwdTextBox
+            // 
+            this.passwdTextBox.Location = new System.Drawing.Point(111, 61);
+            this.passwdTextBox.Name = "passwdTextBox";
+            this.passwdTextBox.Size = new System.Drawing.Size(220, 21);
+            this.passwdTextBox.TabIndex = 5;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 97);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(89, 12);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "数据库连接配置";
+            // 
+            // dbNameTextBox
+            // 
+            this.dbNameTextBox.Location = new System.Drawing.Point(111, 94);
+            this.dbNameTextBox.Name = "dbNameTextBox";
+            this.dbNameTextBox.Size = new System.Drawing.Size(220, 21);
+            this.dbNameTextBox.TabIndex = 7;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 135);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(47, 12);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "导出sql";
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(109, 267);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(447, 23);
+            this.progressBar1.TabIndex = 10;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 267);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(29, 12);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "进度";
+            // 
+            // sqlTextBox
+            // 
+            this.sqlTextBox.Location = new System.Drawing.Point(111, 132);
+            this.sqlTextBox.Name = "sqlTextBox";
+            this.sqlTextBox.Size = new System.Drawing.Size(445, 119);
+            this.sqlTextBox.TabIndex = 12;
+            this.sqlTextBox.Text = "";
+            // 
+            // expButton
+            // 
+            this.expButton.Location = new System.Drawing.Point(226, 312);
+            this.expButton.Name = "expButton";
+            this.expButton.Size = new System.Drawing.Size(105, 25);
+            this.expButton.TabIndex = 13;
+            this.expButton.Text = "开始导出";
+            this.expButton.UseVisualStyleBackColor = true;
+            this.expButton.Click += new System.EventHandler(this.ExpButton_Click);
+            // 
+            // logTextBox
+            // 
+            this.logTextBox.Location = new System.Drawing.Point(12, 361);
+            this.logTextBox.Name = "logTextBox";
+            this.logTextBox.Size = new System.Drawing.Size(544, 128);
+            this.logTextBox.TabIndex = 14;
+            this.logTextBox.Text = "";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem1.Text = "设置临时目录";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.ClientSize = new System.Drawing.Size(568, 501);
+            this.Controls.Add(this.logTextBox);
+            this.Controls.Add(this.expButton);
+            this.Controls.Add(this.sqlTextBox);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.dbNameTextBox);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.passwdTextBox);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.userNameTextBox);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "hyyn-deploy-tool";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -106,6 +250,21 @@
         private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 帮助ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 有问题自己搞定ToolStripMenuItem;
+        private System.Windows.Forms.TextBox userNameTextBox;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox passwdTextBox;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox dbNameTextBox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.RichTextBox sqlTextBox;
+        private System.Windows.Forms.Button expButton;
+        private System.Windows.Forms.RichTextBox logTextBox;
+        private System.Windows.Forms.ToolStripMenuItem 不要逼逼ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
     }
 }
 
