@@ -56,6 +56,7 @@ namespace hyyn_deploy_tool
             this.logTextBox = new System.Windows.Forms.RichTextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.testBtn = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -105,9 +106,8 @@ namespace hyyn_deploy_tool
             // toolStripComboBox1
             // 
             this.toolStripComboBox1.Name = "toolStripComboBox1";
-            this.toolStripComboBox1.Size = new System.Drawing.Size(121, 25);
+            this.toolStripComboBox1.Size = new System.Drawing.Size(210, 25);
             this.toolStripComboBox1.SelectedIndexChanged += new System.EventHandler(this.ToolStripComboBox1_SelectedItemChanged);
-            this.toolStripComboBox1.MouseHover += new System.EventHandler(this.ToolStripComboBox1_Click);
             // 
             // 退出ToolStripMenuItem
             // 
@@ -248,21 +248,31 @@ namespace hyyn_deploy_tool
             this.label6.Font = new System.Drawing.Font("宋体", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label6.Location = new System.Drawing.Point(128, 118);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(170, 11);
+            this.label6.Size = new System.Drawing.Size(183, 11);
             this.label6.TabIndex = 15;
-            this.label6.Text = "示例：10.111.62.242:1530:pms";
+            this.label6.Text = "请输入：服务器IP:监听端口:实例名";
             this.label6.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::hyyn_deploy_tool.Properties.Resources.al0lw_80vct;
             this.pictureBox1.InitialImage = null;
-            this.pictureBox1.Location = new System.Drawing.Point(425, 28);
+            this.pictureBox1.Location = new System.Drawing.Point(465, 28);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(104, 91);
+            this.pictureBox1.Size = new System.Drawing.Size(64, 64);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 16;
             this.pictureBox1.TabStop = false;
+            // 
+            // testBtn
+            // 
+            this.testBtn.Location = new System.Drawing.Point(362, 94);
+            this.testBtn.Name = "testBtn";
+            this.testBtn.Size = new System.Drawing.Size(92, 23);
+            this.testBtn.TabIndex = 17;
+            this.testBtn.Text = "连接测试";
+            this.testBtn.UseVisualStyleBackColor = true;
+            this.testBtn.Click += new System.EventHandler(this.TestBtn_Click);
             // 
             // MainForm
             // 
@@ -270,6 +280,7 @@ namespace hyyn_deploy_tool
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.InactiveBorder;
             this.ClientSize = new System.Drawing.Size(546, 501);
+            this.Controls.Add(this.testBtn);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.logTextBox);
@@ -324,6 +335,7 @@ namespace hyyn_deploy_tool
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button testBtn;
     }
 }
 
