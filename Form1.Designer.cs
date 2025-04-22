@@ -57,8 +57,11 @@ namespace hyyn_deploy_tool
             this.label6 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.testBtn = new System.Windows.Forms.Button();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // contextMenuStrip1
@@ -91,7 +94,7 @@ namespace hyyn_deploy_tool
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(148, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem1.Text = "设置临时目录";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.ToolStripMenuItem1_Click);
             // 
@@ -100,19 +103,19 @@ namespace hyyn_deploy_tool
             this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripComboBox1});
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(148, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem2.Text = "加载连接配置";
             // 
             // toolStripComboBox1
             // 
             this.toolStripComboBox1.Name = "toolStripComboBox1";
-            this.toolStripComboBox1.Size = new System.Drawing.Size(210, 25);
+            this.toolStripComboBox1.Size = new System.Drawing.Size(270, 25);
             this.toolStripComboBox1.SelectedIndexChanged += new System.EventHandler(this.ToolStripComboBox1_SelectedItemChanged);
             // 
             // 退出ToolStripMenuItem
             // 
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.退出ToolStripMenuItem.Text = "退出";
             this.退出ToolStripMenuItem.Click += new System.EventHandler(this.QuitToolStripMenuItem_Click);
             // 
@@ -201,7 +204,7 @@ namespace hyyn_deploy_tool
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(12, 279);
+            this.progressBar1.Location = new System.Drawing.Point(12, 321);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(517, 23);
             this.progressBar1.TabIndex = 10;
@@ -210,7 +213,7 @@ namespace hyyn_deploy_tool
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("宋体", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.Location = new System.Drawing.Point(12, 261);
+            this.label5.Location = new System.Drawing.Point(12, 303);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(37, 15);
             this.label5.TabIndex = 11;
@@ -226,7 +229,7 @@ namespace hyyn_deploy_tool
             // 
             // expButton
             // 
-            this.expButton.Location = new System.Drawing.Point(223, 321);
+            this.expButton.Location = new System.Drawing.Point(204, 359);
             this.expButton.Name = "expButton";
             this.expButton.Size = new System.Drawing.Size(105, 25);
             this.expButton.TabIndex = 13;
@@ -236,7 +239,7 @@ namespace hyyn_deploy_tool
             // 
             // logTextBox
             // 
-            this.logTextBox.Location = new System.Drawing.Point(12, 352);
+            this.logTextBox.Location = new System.Drawing.Point(12, 390);
             this.logTextBox.Name = "logTextBox";
             this.logTextBox.Size = new System.Drawing.Size(517, 137);
             this.logTextBox.TabIndex = 14;
@@ -248,9 +251,9 @@ namespace hyyn_deploy_tool
             this.label6.Font = new System.Drawing.Font("宋体", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label6.Location = new System.Drawing.Point(128, 118);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(183, 11);
+            this.label6.Size = new System.Drawing.Size(340, 11);
             this.label6.TabIndex = 15;
-            this.label6.Text = "请输入：服务器IP:监听端口:实例名";
+            this.label6.Text = "请输入：服务器IP:监听端口:实例名 或 服务器IP:监听端口/服务名";
             this.label6.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             // 
             // pictureBox1
@@ -274,12 +277,51 @@ namespace hyyn_deploy_tool
             this.testBtn.UseVisualStyleBackColor = true;
             this.testBtn.Click += new System.EventHandler(this.TestBtn_Click);
             // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Increment = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Location = new System.Drawing.Point(130, 258);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            300000,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            30000,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 21);
+            this.numericUpDown1.TabIndex = 18;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            30000,
+            0,
+            0,
+            0});
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("宋体", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label7.Location = new System.Drawing.Point(12, 264);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(82, 15);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "单文件大小";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.ClientSize = new System.Drawing.Size(546, 501);
+            this.ClientSize = new System.Drawing.Size(546, 536);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.testBtn);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label6);
@@ -304,6 +346,7 @@ namespace hyyn_deploy_tool
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -336,6 +379,8 @@ namespace hyyn_deploy_tool
         private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button testBtn;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label label7;
     }
 }
 

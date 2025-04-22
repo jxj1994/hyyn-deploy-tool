@@ -13,6 +13,7 @@ using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using Oracle.ManagedDataAccess.Client;
 using System.Linq;
+using SixLabors.ImageSharp;
 
 namespace hyyn_deploy_tool
 {
@@ -77,19 +78,25 @@ namespace hyyn_deploy_tool
                     expButton.Enabled = true;
                     return;
                 }
+                // 将sql语句存储为sql文件
+                UpdateMsg("开始将SQL语句存储为sql文件...", 10);
+                sql = sql.Replace("\r\n", " ").Replace(";","");
+                string sqlFilePath = Path.Combine(tempDir, Environment.UserName +
+                    DateTime.Now.ToString("yyyyMMddHHmmss") + ".sql");
+                File.WriteAllText(sqlFilePath, sql);
                 //获取当前系统登录用户名用于命名临时文件
                 string csvFileName = Environment.UserName + DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv";
                 StringBuilder command = new StringBuilder();
-                command.Append(Path.Combine(Application.StartupPath, "source", "sqluldr264.exe"))
+                command.Append(Path.Combine(Application.StartupPath, "sqluldr264.exe"))
                 .Append(" user=")
                 .Append(username)
                 .Append("/")
                 .Append(password)
                 .Append("@")
                 .Append(dbName)
-                .Append(" sql=\"")
-                .Append(sql)
-                .Append("\" rows=1000 file=")
+                .Append(" sql=")
+                .Append(sqlFilePath)
+                .Append(" rows=2000 file=")
                 .Append(Path.Combine(tempDir, csvFileName))
                 .Append(" head=yes text=csv");
                 //执行命令行命令导出数据
@@ -129,9 +136,9 @@ namespace hyyn_deploy_tool
                 }
             }
             //检查sqluldr264是否存在
-            if (!File.Exists(Path.Combine(Application.StartupPath, "source", "sqluldr264.exe")))
+            if (!File.Exists(Path.Combine(Application.StartupPath,  "sqluldr264.exe")))
             {
-                UpdateMsg("依赖文件source/sqluldr264.exe不存在，无法导出！");
+                UpdateMsg("依赖文件sqluldr264.exe不存在，无法导出！");
                 expButton.Enabled = false;
                 return false;
             }
@@ -140,6 +147,7 @@ namespace hyyn_deploy_tool
 
         private void RunCommand(string csvFileName, string excelFileName, string command)
         {
+            UpdateMsg("开始执行导出命令", 20);
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
@@ -151,16 +159,17 @@ namespace hyyn_deploy_tool
                 CreateNoWindow = true
             };
             process.StartInfo = startInfo;
-            process.OutputDataReceived += (sender, e) => UpdateTextBox(logTextBox, e.Data);
-            process.ErrorDataReceived += (sender, e) => UpdateTextBox(logTextBox, $"[Error] {e.Data}");
+            int barData = 20;
+            process.OutputDataReceived += (sender, e) => UpdateTextBox(logTextBox,progressBar1, e.Data, 20);
+            process.ErrorDataReceived += (sender, e) => UpdateTextBox(logTextBox, progressBar1,$"[Error] {e.Data}", barData);
             // 订阅Exited事件
             process.EnableRaisingEvents = true;  // 必须启用事件
             process.Exited += (sender, e) =>
             {
                 // 进程退出后的操作
                 // 此处可调用方法或更新UI（需跨线程处理）
-                UpdateTextBox(logTextBox, "导出CSV数据完成！");
-                UpdateTextBox(logTextBox, "开始转换CSV数据为Excel文件...");
+                UpdateTextBox(logTextBox, progressBar1, "导出CSV数据完成！",50);
+                UpdateTextBox(logTextBox, progressBar1,"开始转换CSV数据为Excel文件...",60);
                 var readConfig = new MiniExcelLibs.Csv.CsvConfiguration()
                 {
                     StreamReaderFunc = (stream) => new StreamReader(stream, Encoding.GetEncoding("gb2312"))
@@ -169,24 +178,55 @@ namespace hyyn_deploy_tool
                 {
                     StreamWriterFunc = (stream) => new StreamWriter(stream, Encoding.GetEncoding("gb2312"))
                 };
+                string resultPath = "";
                 if (File.Exists(Path.Combine(tempDir, csvFileName)))
                 {
                     FileStream csv = File.Open(Path.Combine(tempDir, csvFileName), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                    FileStream xlsx = new FileStream(Path.Combine(tempDir, excelFileName), FileMode.CreateNew);
                     IEnumerable<object> value = csv.Query(useHeaderRow: false, null, ExcelType.CSV, configuration: readConfig);
-                    xlsx.SaveAs(value, printHeader: false, configuration: writeConfig);
-                    xlsx.Close();
-                    csv.Close();
-                    UpdateTextBox(logTextBox, "转换CSV数据为Excel文件完成！");
-                    Finish(logTextBox, progressBar1, "导出Excel数据完成！文件路径：\r"
-                        + Path.Combine(tempDir, excelFileName));
+                    int size = (int)numericUpDown1.Value;
+                    if (value.Count() > size)
+                    {
+                        int n = 0;
+                        for (int i = 0; i < value.Count(); i += size)
+                        {
+                            n++;
+                            string batchFileName = excelFileName.Replace(".xlsx", $"_{n}.xlsx");
+                            resultPath += batchFileName+";";
+                            FileStream xlsx = new FileStream(Path.Combine(tempDir, batchFileName), FileMode.CreateNew);
+                            
+                            xlsx.SaveAs(value.Take(1).Concat(value.Skip(i).Take(size)), printHeader: false, configuration: writeConfig);
+                            xlsx.Close();
+                        }
+                        csv.Close();
+                    }
+                    else
+                    {
+                        resultPath = excelFileName;
+                        FileStream xlsx = new FileStream(Path.Combine(tempDir, excelFileName), FileMode.CreateNew);
+                        xlsx.SaveAs(value, printHeader: false, configuration: writeConfig);
+                        xlsx.Close();
+                        csv.Close();
+                    }
+                        
+                    UpdateTextBox(logTextBox, progressBar1, "转换CSV数据为Excel文件完成！",90);
+                    Finish(logTextBox, progressBar1, "导出Excel数据完成！文件存储于：\r"
+                        + tempDir + " 路径下：\r" + resultPath);
                 }
                 else
                 {
                     MessageBox.Show("导出Excel失败，临时目录" + tempDir + "中无法找到csv文件");
                     Finish(logTextBox, progressBar1, "导出Excel失败，临时目录" + tempDir + "中无法找到csv文件");
                 }
-                File.Delete(Path.Combine(tempDir, csvFileName));
+                try
+                {
+                    File.Delete(Path.Combine(tempDir, csvFileName));
+                }
+                catch (Exception ex)
+                {
+                    UpdateMsg("删除临时文件失败");
+                    UpdateMsg(ex.Message);
+                }
+                
                 if (expButton.InvokeRequired)
                 {
                     expButton.Invoke(new Action(() =>
@@ -204,7 +244,7 @@ namespace hyyn_deploy_tool
             process.BeginErrorReadLine();
         }
 
-        private void UpdateTextBox(RichTextBox textBox, string data)
+        private void UpdateTextBox(RichTextBox textBox, ProgressBar progressBar1, string data,int barData)
         {
             if (string.IsNullOrEmpty(data)) return;
             if (textBox.InvokeRequired)
@@ -219,6 +259,17 @@ namespace hyyn_deploy_tool
             {
                 textBox.AppendText(data + Environment.NewLine);
                 textBox.ScrollToCaret();
+            }
+            if (progressBar1.InvokeRequired)
+            {
+                progressBar1.Invoke(new Action(() =>
+                {
+                    progressBar1.Value = barData;
+                }));
+            }
+            else
+            {
+                progressBar1.Value = barData;
             }
         }
 
@@ -292,20 +343,7 @@ namespace hyyn_deploy_tool
                 {
                     ConnectInfo item = connectInfos[i];
                     connectInfoDict.Add((i + 1) + "：" + item.user + "@" + item.dbName, item);
-                    if (toolStripComboBox1.Items.Count == 0)
-                    {
-                        toolStripComboBox1.Items.Add((i + 1) + "：" + item.user + "@" + item.dbName);
-                    }
-                    else
-                    {
-                        foreach (var item1 in toolStripComboBox1.Items)
-                        {
-                            if (!item1.ToString().Equals(item.ToString()))
-                            {
-                                toolStripComboBox1.Items.Add(item);
-                            }
-                        }
-                    }
+                    toolStripComboBox1.Items.Add((i + 1) + "：" + item.user + "@" + item.dbName);
                 }
             }
             if (CheckSource())
@@ -367,19 +405,25 @@ namespace hyyn_deploy_tool
 
             }
             // 判断是否已经存在
-            foreach (ConnectInfo item in connectInfoList)
+            int hit = 0;
+            for (int i = 0; i < connectInfoList.Count; i++)
             {
+                ConnectInfo item = connectInfoList[i];
                 if (item.dbName.Equals(dbName) && item.user.Equals(user))
                 {
                     continue;
                 }
                 else
                 {
-                    connectInfoList.Add(connectInfo);
+                    hit += 1;
                 }
 
             }
-            string testJson = JsonSerializer.Serialize(connectInfoList);
+            if (hit == connectInfoList.Count)
+            {
+                connectInfoList.Add(connectInfo);
+            }
+            // string testJson = JsonSerializer.Serialize(connectInfoList);
             File.WriteAllText(Path.Combine(Application.StartupPath, "connections.json")
                 , JsonSerializer.Serialize(connectInfoList));
         }
@@ -508,5 +552,7 @@ namespace hyyn_deploy_tool
             }
             return isSuccess;
         }
+
+
     }
 }
