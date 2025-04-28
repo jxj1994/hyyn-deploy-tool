@@ -39,6 +39,12 @@ namespace hyyn_deploy_tool
              * 3.已连接成功的配置进行保存，下次使用选择对应的服务直接带出 */
             if (CheckSource())
             {
+                // 检查连接
+                bool isSuccess = ConnectTest();
+                if (!isSuccess)
+                {
+                    MessageBox.Show("数据库都连不上，还想导出？自己好好反省下\r" + errorMsg);
+                }
                 expButton.Enabled = false;
                 //开始导出数据
                 UpdateMsg("开始导出数据...", 10);
@@ -83,7 +89,7 @@ namespace hyyn_deploy_tool
                 sql = sql.Replace("\r\n", " ").Replace(";","");
                 string sqlFilePath = Path.Combine(tempDir, Environment.UserName +
                     DateTime.Now.ToString("yyyyMMddHHmmss") + ".sql");
-                File.WriteAllText(sqlFilePath, sql);
+                File.WriteAllText(sqlFilePath, sql, Encoding.Default);
                 //获取当前系统登录用户名用于命名临时文件
                 string csvFileName = Environment.UserName + DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv";
                 StringBuilder command = new StringBuilder();
@@ -493,7 +499,7 @@ namespace hyyn_deploy_tool
             string dbName = dbNameTextBox.Text;
             //校验输入的数据库信息是否正确
             //使用正则表达式校验数据库信息是否正确
-            if (!Regex.IsMatch(dbName, "[\\w.-]+:\\d+[/|:]\\w+$"))
+            if (!Regex.IsMatch(dbName, "^[\\d.-]+:\\d+[/|:]\\w+$"))
             {
                 this.errorMsg = "SB，数据库连接写错了！";
                 expButton.Enabled = false;
@@ -512,7 +518,7 @@ namespace hyyn_deploy_tool
                 .Append(")(PORT=")
                 .Append(dbName.Split(':')[1].Split('/')[0]);
             //如果数据库信息中包含/，则使用SERVICE_NAME连接，否则使用SID连接
-            if (Regex.IsMatch(dbName, "[\\w.-]+:\\d+/\\w+$"))
+            if (Regex.IsMatch(dbName, "^[\\d.-]+:\\d+/\\w+$"))
             {
                 connectString.Append("))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=")
                     .Append(dbName.Split('/')[1]);
@@ -539,6 +545,7 @@ namespace hyyn_deploy_tool
                     cmd.ExecuteNonQuery();
                     cmd.Dispose();
                     isSuccess = true;
+                    expButton.Enabled = true;
                 }
                 catch (Exception ex)
                 {
