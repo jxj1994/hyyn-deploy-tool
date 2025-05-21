@@ -28,15 +28,15 @@ namespace hyyn_deploy_tool
 
         private string errorMsg = "";
 
+        private static string resultPath = "";
+
         private Dictionary<string, ConnectInfo> connectInfoDict = new Dictionary<string, ConnectInfo>();
+
+        private Dictionary<string, string> sqlFiles = new Dictionary<string, string>();
 
         private void ExpButton_Click(object sender, EventArgs e)
         {
             // TODO 
-            /* TODO
-             * 1.优化oracle导出工具，以60万行这个表格进行拆分
-             * 2.当导出数据量太大时，数据会缺失，数据量太大时，进行拆分处置
-             * 3.已连接成功的配置进行保存，下次使用选择对应的服务直接带出 */
             if (CheckSource())
             {
                 // 检查连接
@@ -48,6 +48,7 @@ namespace hyyn_deploy_tool
                 expButton.Enabled = false;
                 //开始导出数据
                 UpdateMsg("开始导出数据...", 10);
+                // TODO 
                 string username = userNameTextBox.Text;
                 if (username == "")
                 {
@@ -76,7 +77,7 @@ namespace hyyn_deploy_tool
                 {
                     SaveConnection(dbName, username);
                 }
-                string sql = sqlTextBox.Text;
+                string sql = sqlBox.Text;
                 if (sql == "")
                 {
                     MessageBox.Show("请输入SQL！");
@@ -153,6 +154,8 @@ namespace hyyn_deploy_tool
 
         private void RunCommand(string csvFileName, string excelFileName, string command)
         {
+            SaveSQLFile(sqlProposeBox.Text , sqlBox.Text);
+            
             UpdateMsg("开始执行导出命令", 20);
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo
@@ -248,6 +251,7 @@ namespace hyyn_deploy_tool
             process.Start();
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
+            
         }
 
         private void UpdateTextBox(RichTextBox textBox, ProgressBar progressBar1, string data,int barData)
@@ -360,7 +364,81 @@ namespace hyyn_deploy_tool
             {
                 UpdateMsg("资源文件初始化失败！");
             }
+
+            // 从文件中加载sql用途
+            // 判断路径是否存咋
+            string sqlPath  = HasSqlFiles("temp");
+            if (sqlPath != null) 
+            {
+                // 成功找到sql 文件或创建目录成功
+                try
+                {
+                    string[] sqlFilesPaths = Directory.GetFiles(resultPath, "*.sql");
+
+                    if (sqlFilesPaths.Length > 0)
+                    {
+                        for (int i = 0;i<sqlFilesPaths.Length; i++)
+                        {
+                            string fileName = Path.GetFileNameWithoutExtension(sqlFilesPaths[i]); // 获取文件名（不含扩展名）
+                            string content = File.ReadAllText(sqlFilesPaths[i]); // 读取文件内容
+                            // 存入字典中，防止重复键（可选判断）
+                            if (!sqlFiles.ContainsKey(fileName))
+                            {
+                                sqlFiles.Add(fileName, content);
+                                toolStripComboBox3.Items.Add((i+1) + "：" + fileName);
+                            }
+                            else
+                            {
+                                Console.WriteLine($"警告：文件名 {fileName} 已存在，跳过。");
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("读取 SQL 文件时出错：" + ex.Message);
+                }
+
+            }else
+            {
+                UpdateMsg("用途文件初始化失败");
+            }
+
         }
+
+        private string HasSqlFiles(string folderName)
+        {
+            // 定义要尝试的盘符
+            char[] driveLetters = { 'G', 'F', 'E' };
+            foreach (var drive in driveLetters)
+            {
+                string path = $@"{drive}:\{folderName}";
+
+                // 检查路径是否有效（比如盘符是否存在）
+                if (!Directory.Exists(path))
+                {
+                    try
+                    {
+                        // 尝试创建目录
+                        Directory.CreateDirectory(path);
+                        resultPath = path;
+                        return path; // 创建成功但没有.sql文件
+                    }
+                    catch (Exception ex)
+                    {
+                        UpdateMsg($"无法创建路径 {path}：{ex.Message}");
+                        continue;
+                    }
+                } else
+                {
+                    resultPath = path;
+                    return path;
+                }
+            }
+            return null;
+        }
+
+
 
         private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -408,7 +486,6 @@ namespace hyyn_deploy_tool
                     UpdateMsg("读取历史连接失败，请检查文件格式是否正确" + ex.Message);
                 }
 
-
             }
             // 判断是否已经存在
             int hit = 0;
@@ -434,6 +511,28 @@ namespace hyyn_deploy_tool
                 , JsonSerializer.Serialize(connectInfoList));
         }
 
+        private void SaveSQLFile(string propose, string sql)
+        {
+            // 判断propose是否为空
+            if (propose == null || propose == "")
+            {
+                return;
+            }
+            // 如果sql用途不存在 , 加入映射中 
+            if (!sqlFiles.ContainsKey(propose))
+            {
+                sqlFiles.Add(propose, sql);
+                File.WriteAllText(Path.Combine(resultPath, propose + ".sql"),sql);
+            }
+
+            //sql用途存在但是sql内容不相同
+            if (!sqlFiles[propose].Equals(sql))
+            {
+                propose += Environment.UserName + DateTime.Now.ToString("yyyyMMddHHmmss");
+                File.WriteAllText(Path.Combine(resultPath, propose + ".sql"), sql);
+            }
+        }
+
         private void ToolStripComboBox1_SelectedItemChanged(object sender, EventArgs e)
         {
             dbNameTextBox.Text = toolStripComboBox1.SelectedItem.ToString();
@@ -443,6 +542,21 @@ namespace hyyn_deploy_tool
                 dbNameTextBox.Text = connectInfo.dbName;
                 userNameTextBox.Text = connectInfo.user;
             }
+            mainToolStripMenuItem.HideDropDown();
+        }
+
+        private void ToolStripComboBox3_SelectedItemChanged(object sender, EventArgs e)
+        {
+            string text = toolStripComboBox3.SelectedItem.ToString();
+            string key = text.Split('：')[1].Trim();
+            sqlProposeBox.Text = key;
+            if (sqlFiles.ContainsKey(key))
+                {
+                    string sql = sqlFiles[key];
+                    sqlBox.Text = sql;
+                }
+           
+            
             mainToolStripMenuItem.HideDropDown();
         }
 

@@ -38,6 +38,8 @@ namespace hyyn_deploy_tool
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBox3 = new System.Windows.Forms.ToolStripComboBox();
             this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.有问题自己搞定ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,7 +53,7 @@ namespace hyyn_deploy_tool
             this.label4 = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label5 = new System.Windows.Forms.Label();
-            this.sqlTextBox = new System.Windows.Forms.RichTextBox();
+            this.sqlBox = new System.Windows.Forms.RichTextBox();
             this.expButton = new System.Windows.Forms.Button();
             this.logTextBox = new System.Windows.Forms.RichTextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -59,6 +61,9 @@ namespace hyyn_deploy_tool
             this.testBtn = new System.Windows.Forms.Button();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
+            this.sqlProposeBox = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.toolStripComboBox2 = new System.Windows.Forms.ToolStripComboBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -86,6 +91,7 @@ namespace hyyn_deploy_tool
             this.mainToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
             this.toolStripMenuItem2,
+            this.toolStripMenuItem4,
             this.退出ToolStripMenuItem});
             this.mainToolStripMenuItem.Name = "mainToolStripMenuItem";
             this.mainToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
@@ -111,6 +117,20 @@ namespace hyyn_deploy_tool
             this.toolStripComboBox1.Name = "toolStripComboBox1";
             this.toolStripComboBox1.Size = new System.Drawing.Size(270, 25);
             this.toolStripComboBox1.SelectedIndexChanged += new System.EventHandler(this.ToolStripComboBox1_SelectedItemChanged);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripComboBox3});
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(148, 22);
+            this.toolStripMenuItem4.Text = "加载sql配置";
+            // 
+            // toolStripComboBox3
+            // 
+            this.toolStripComboBox3.Name = "toolStripComboBox3";
+            this.toolStripComboBox3.Size = new System.Drawing.Size(270, 25);
+            this.toolStripComboBox3.SelectedIndexChanged += new System.EventHandler(this.ToolStripComboBox3_SelectedItemChanged);
             // 
             // 退出ToolStripMenuItem
             // 
@@ -179,7 +199,7 @@ namespace hyyn_deploy_tool
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("宋体", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(9, 100);
+            this.label3.Location = new System.Drawing.Point(12, 96);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(112, 15);
             this.label3.TabIndex = 6;
@@ -196,7 +216,7 @@ namespace hyyn_deploy_tool
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("宋体", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.Location = new System.Drawing.Point(60, 132);
+            this.label4.Location = new System.Drawing.Point(63, 171);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(61, 15);
             this.label4.TabIndex = 8;
@@ -219,13 +239,13 @@ namespace hyyn_deploy_tool
             this.label5.TabIndex = 11;
             this.label5.Text = "进度";
             // 
-            // sqlTextBox
+            // sqlBox
             // 
-            this.sqlTextBox.Location = new System.Drawing.Point(130, 132);
-            this.sqlTextBox.Name = "sqlTextBox";
-            this.sqlTextBox.Size = new System.Drawing.Size(399, 119);
-            this.sqlTextBox.TabIndex = 12;
-            this.sqlTextBox.Text = "";
+            this.sqlBox.Location = new System.Drawing.Point(130, 171);
+            this.sqlBox.Name = "sqlBox";
+            this.sqlBox.Size = new System.Drawing.Size(399, 80);
+            this.sqlBox.TabIndex = 12;
+            this.sqlBox.Text = "";
             // 
             // expButton
             // 
@@ -314,12 +334,37 @@ namespace hyyn_deploy_tool
             this.label7.TabIndex = 19;
             this.label7.Text = "单文件大小";
             // 
+            // sqlProposeBox
+            // 
+            this.sqlProposeBox.Font = new System.Drawing.Font("宋体", 11F);
+            this.sqlProposeBox.Location = new System.Drawing.Point(130, 141);
+            this.sqlProposeBox.Name = "sqlProposeBox";
+            this.sqlProposeBox.Size = new System.Drawing.Size(399, 24);
+            this.sqlProposeBox.TabIndex = 20;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("宋体", 11F);
+            this.label8.Location = new System.Drawing.Point(63, 141);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(61, 15);
+            this.label8.TabIndex = 21;
+            this.label8.Text = "SQL用途";
+            // 
+            // toolStripComboBox2
+            // 
+            this.toolStripComboBox2.Name = "toolStripComboBox2";
+            this.toolStripComboBox2.Size = new System.Drawing.Size(270, 25);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.InactiveBorder;
             this.ClientSize = new System.Drawing.Size(546, 536);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.sqlProposeBox);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.testBtn);
@@ -327,7 +372,7 @@ namespace hyyn_deploy_tool
             this.Controls.Add(this.label6);
             this.Controls.Add(this.logTextBox);
             this.Controls.Add(this.expButton);
-            this.Controls.Add(this.sqlTextBox);
+            this.Controls.Add(this.sqlBox);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.label4);
@@ -369,7 +414,7 @@ namespace hyyn_deploy_tool
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.RichTextBox sqlTextBox;
+        private System.Windows.Forms.RichTextBox sqlBox;
         private System.Windows.Forms.Button expButton;
         private System.Windows.Forms.RichTextBox logTextBox;
         private System.Windows.Forms.ToolStripMenuItem 不要逼逼ToolStripMenuItem;
@@ -381,6 +426,11 @@ namespace hyyn_deploy_tool
         private System.Windows.Forms.Button testBtn;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox sqlProposeBox;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBox2;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBox3;
     }
 }
 
